@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { Link, useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import M from 'materialize-css'
 import { Card, Row, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { Person } from '@material-ui/icons';
-
-
-
-
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 const Signup = () => {
     const [username, setUsername] = useState("");
@@ -14,6 +11,14 @@ const Signup = () => {
     const [password, setPassword] = useState("");
     const [name, setName] = useState("")
     const history = useHistory();
+    const { speak, voices } = useSpeechSynthesis();
+
+    let voice = null;
+    voices.forEach(v => {
+        if (v.lang === 'hi-IN') {
+            voice = v;
+        }
+    })
 
     const postInfo = () => {
         fetch('http://localhost:5000/register', {
@@ -30,31 +35,38 @@ const Signup = () => {
         }).then(response => response.json())
             .then(data => {
                 console.log(data)
-                if(data.error){
-                    M.toast({ html:data.error });
+                if (data.error) {
+                    speak({
+                        text: `Unable to register. ${data.error}`,
+                        voice
+                    })
+                    M.toast({ html: data.error });
                     return
                 }
-                else{
-                M.toast({html: data.message})
-                history.push('/signin')
+                else {
+                    speak({
+                        text: `Successfully registered with username ${username}`,
+                        voice
+                    })
+                    M.toast({ html: data.message })
+                    history.push('/signin')
                 }
             }
             )
-
     }
 
     return (
         <Card className="mycard">
-            <div classsname ="card auth-card">
+            <div classsname="card auth-card">
                 <Row className="justify-content-center">
                     <h2 className="brand-logo">ChatsApp</h2>
                 </Row>
                 <Row className="justify-content-center">
-                  <Person className="icon-person" style={{ fontSize: 120 }} />   
+                    <Person className="icon-person" style={{ fontSize: 120 }} />
                 </Row>
                 <InputGroup>
-                <Row classname="justify-content-center">
-                        <FormControl 
+                    <Row classname="justify-content-center">
+                        <FormControl
                             style={{ margin: "5px 20px 5px 20px" }}
                             type="text"
                             placeholder="Name"
@@ -62,7 +74,7 @@ const Signup = () => {
                             onChange={e => setName(e.target.value)}
                         />
 
-                        <FormControl 
+                        <FormControl
                             style={{ margin: "5px 20px 5px 20px" }}
                             type="text"
                             placeholder="Username"
@@ -70,7 +82,7 @@ const Signup = () => {
                             onChange={e => setUsername(e.target.value)}
                         />
 
-                        <FormControl 
+                        <FormControl
                             style={{ margin: "5px 20px 5px 20px" }}
                             type="password"
                             placeholder="Password"
@@ -78,7 +90,7 @@ const Signup = () => {
                             onChange={e => setPassword(e.target.value)}
                         />
 
-                        <FormControl 
+                        <FormControl
                             style={{ margin: "5px 20px 5px 20px" }}
                             type="text"
                             placeholder="Phone"
@@ -86,22 +98,13 @@ const Signup = () => {
                             onChange={e => setPhone(e.target.value)}
                         />
                         <Button className="btn-s waves-effect waves-light" type="submit"
-                                onClick = {() => postInfo()} >Signup
+                            onClick={() => postInfo()} >Signup
                         </Button>
                         <Link to='/signin'>Already have an account?</Link>
-
-                </Row>
-                    
-
+                    </Row>
                 </InputGroup>
-                   
-
-                <div style={{display:"flex", justifyContent:"space-around"}}>
-
+                <div style={{ display: "flex", justifyContent: "space-around" }}>
                 </div>
-                    
-            
-            
             </div>
         </Card>
     )

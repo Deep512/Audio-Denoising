@@ -4,8 +4,7 @@ import M from 'materialize-css'
 import './auth.css'
 import { Card, Row, Col, InputGroup, FormControl, Button } from 'react-bootstrap'
 import { Person } from '@material-ui/icons';
-import clickAudioUrl from '../../assets/click.wav';
-import useAudio from '../../hooks/useAudio';
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 
 const Signin = () => {
@@ -13,9 +12,14 @@ const Signin = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const history = useHistory();
-    const [playing, toggle] = useAudio(clickAudioUrl);
+    const { speak, voices } = useSpeechSynthesis();
 
-    console.log(clickAudioUrl);
+    let voice = null;
+    voices.forEach(v => {
+        if (v.lang === 'hi-IN') {
+            voice = v;
+        }
+    })
 
     const postInfo = () => {
         fetch('http://localhost:5000/auth/login', {
@@ -33,11 +37,18 @@ const Signin = () => {
 
                 console.log(data);
                 if (data.error) {
+                    speak({
+                        text: `Unable to sign in. ${data.error}`,
+                        voice
+                    })
                     M.toast({ html: data.error });
                     return
                 }
                 else {
-                    toggle();
+                    speak({
+                        text: `Signed in successfully as ${username}!`,
+                        voice
+                    });
                     M.toast({ html: "Signed in successfully!" })
                     console.log(data)
                     localStorage.setItem("jwt", data.token)
@@ -46,7 +57,6 @@ const Signin = () => {
                 }
             }
             )
-
     }
 
     return (
@@ -79,21 +89,9 @@ const Signin = () => {
                         <Link to='/signup'>Dont have an account?</Link>
 
                     </InputGroup>
-
-
-
-
-
                     <div style={{ display: "flex", justifyContent: "space-around" }}>
-
-
-
-
-
                     </div>
                 </Row>
-
-
             </div>
         </Card>
     )
