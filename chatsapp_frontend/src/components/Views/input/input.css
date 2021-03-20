@@ -1,0 +1,17 @@
+.send-col{
+    text-align: center;
+    margin: 0px 0px 0px 0px;
+    padding: 0px;
+}
+.send{
+    float: right;
+    position: absolute;
+    left: 0;
+}
+/* .camera{
+      margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+} */

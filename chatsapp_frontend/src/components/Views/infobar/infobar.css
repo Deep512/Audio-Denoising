@@ -1,0 +1,14 @@
+.brand-logo{
+    text-align: left !important;
+}
+
+.navbar-brand{
+    font-size: medium !important;
+}
+.logout{
+    float: right;  
+    margin-right: 30px; 
+    position: absolute;
+    right: 0;
+}
+
