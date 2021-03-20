@@ -8,14 +8,14 @@ router.post("/login",function(req,res,next){
     if(!req.body.username || !req.body.password)
     {
         // res.status(400).send("Invalid request");
-        res.status(401).json({ error: "Inavalid request" })
+        res.status(401).json({ error: "Invalid request" })
         return;
     }
     req.logout();
     passport.authenticate("Auth",(err,user)=> {
         if (err != null || user === false) {
-            // res.status(401).send("Inavalid username / Password");
-            res.status(401).json({ error:"Inavalid username / Password"})
+            // res.status(401).send("Invalid username / Password");
+            res.status(401).json({ error:"Invalid username / Password"})
             return;
         }
         req.logIn(user, function (err) {
