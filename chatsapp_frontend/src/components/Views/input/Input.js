@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import {InputGroup,Button, Col, FormControl,  } from 'react-bootstrap';
+import { InputGroup, Button, Col, FormControl, } from 'react-bootstrap';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { updateMessage, updateHistory } from "../../../redux/actionCreator";
-import {CameraAlt, Mic, Send} from '@material-ui/icons'
+import { ReactMediaRecorder } from 'react-media-recorder';
+// import {CameraAlt, Mic, Send} from '@material-ui/icons'
 import './input.css'
 
 const mapStateToProps = state => {
@@ -21,37 +22,37 @@ const mapDispatchToProps = (dispatch) => ({
 
 class Inputmsg extends Component {
 
-    constructor(props){
-        super(props); 
+    constructor(props) {
+        super(props);
         this.state = {
             selectedFile: "",
-            
+            audioUrl: ""
         }
         this.enc = null;
         this.msg = '';
         this.imagetoggler = false;
-        this.inputref = React.createRef();  
-        this.fileloader = React.createRef();     
+        this.inputref = React.createRef();
+        this.fileloader = React.createRef();
     }
 
     handler(encrypted_data) {
         this.enc = encrypted_data
     }
-    async handleFile(event){
+    async handleFile(event) {
         this.setState({ selectedFile: event.target.files[0] })
     }
-    encrypt = async(event) => {
+    encrypt = async (event) => {
         this.imagetoggler = true;
         await this.handleFile(event)
         var image = this.state.selectedFile;
         const reader = new FileReader();
-        reader.addEventListener("load",  async () => {
+        reader.addEventListener("load", async () => {
             // this.enc = reader.result
             await this.handler(reader.result)
 
         }, false)
-        
-        if(image){
+
+        if (image) {
             console.log(reader.readAsDataURL(image));
         }
         console.log(reader.result)
@@ -76,7 +77,7 @@ class Inputmsg extends Component {
             .then(response => response.json())
             .then(async result => {
                 await this.props.updateHistory(result);
-                console.log("History from Input.js: ",this.props.history)
+                console.log("History from Input.js: ", this.props.history)
             })
             .catch(error => console.log('error', error));
 
@@ -85,16 +86,16 @@ class Inputmsg extends Component {
     resetinput = () => {
         const input = this.inputref.current.reset();
         // const fileinput = this.fileloader.current.reset()
-        console.log("input reset",input)
+        console.log("input reset", input)
     }
 
 
-    
-    render(){
-        return(
-            <InputGroup className="input-bar" style={{backgroundColor:"white" }} >
+
+    render() {
+        return (
+            <InputGroup className="input-bar" style={{ backgroundColor: "white" }} >
                 <form className="col-12 row" ref={this.inputref}>
-                    <Col xs={8} md={10}  style={{ padding: "4px 5px 2px 5px" }}><FormControl
+                    <Col xs={8} md={10} style={{ padding: "4px 5px 2px 5px" }}><FormControl
 
                         className="FormControl"
                         type="text"
@@ -120,8 +121,8 @@ class Inputmsg extends Component {
                             var input = window.document.getElementById("fileloader")
                             console.log(input)
 
-                            console.log("file",this.state.selectedFile)
-                            if(this.imagetoggler){
+                            console.log("file", this.state.selectedFile)
+                            if (this.imagetoggler) {
                                 console.log("sending image")
                                 await this.props.updateMessage({
                                     from: this.props.loggedInUser,
@@ -132,12 +133,12 @@ class Inputmsg extends Component {
                                 this.imagetoggler = false;
                                 this.enc = " "
                             }
-                            else{
+                            else {
                                 console.log("sending text")
                                 await this.props.updateMessage({
                                     from: this.props.loggedInUser,
                                     to: this.props.reciepient,
-                                    type:"text",
+                                    type: "text",
                                     text: this.msg,
 
                                 })
@@ -148,11 +149,11 @@ class Inputmsg extends Component {
                             console.log("toggler on end of button click", this.imagetoggler)
 
                         }}
-                            style={{fontSize: 13,marginRight: "5px"}}    
+                            style={{ fontSize: 13, marginRight: "5px" }}
                         >send</Button>
                     </Col>
                 </form>
-                    
+
             </InputGroup>
 
         )

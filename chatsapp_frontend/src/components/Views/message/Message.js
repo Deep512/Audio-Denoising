@@ -6,6 +6,7 @@ import ScrollToBottom from 'react-scroll-to-bottom';
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { updateMessage, updateHistory } from '../../../redux/actionCreator'
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 const mapStateToProps = state => {
     return {
@@ -20,7 +21,25 @@ const mapDispatchToProps = (dispatch) => ({
     updateHistory: (new_history) => dispatch(updateHistory(new_history)),
 })
 
+const MessageText = ({ text }) => {
+    const { speak, voices } = useSpeechSynthesis();
 
+    let voice = null;
+    voices.forEach(v => {
+        if (v.lang === 'hi-IN') {
+            voice = v;
+        }
+    })
+
+    return (
+        <span>{text}
+            <span
+                onClick={() => speak({
+                    text: text.charAt(0).toUpperCase() + text.slice(1),
+                    voice
+                })}>🔊</span></span>
+    )
+}
 class Message extends Component {
 
     constructor(props) {
@@ -35,41 +54,38 @@ class Message extends Component {
         const t_hstry = [...this.props.history];
         console.log("HIstory used to display", t_hstry)
         const history_messages = t_hstry.map((msg) => {
-            if ((msg.from == this.props.loggedInUser) && (msg.to == this.props.reciepient)) {
-
-                if (msg.type == "img") {
+            if ((msg.from === this.props.loggedInUser) && (msg.to === this.props.reciepient)) {
+                if (msg.type === "img") {
                     return (
                         <Card key={msg.timestamp} className="img-from-client ">
                             <img class="image" src={msg.enc} alt="video" />
                         </Card>
                     )
                 }
-                {
-                    return (
-                        <Card key={msg.timestamp} className="msg-from-client col-offset-left-8 col-4">
-                            <CardBody className="cardbody"> {msg.text} </CardBody>
-                        </Card>
-                    )
-                }
-
-
+                return (
+                    <Card key={msg.timestamp} className="msg-from-client col-offset-left-8 col-4">
+                        <CardBody className="cardbody"> <MessageText text={msg.text} /> </CardBody>
+                    </Card>
+                )
             }
-            else if (msg.from == this.props.reciepient && msg.to == this.props.loggedInUser) {
-                if (msg.type == "img") {
+            else if (msg.from === this.props.reciepient && msg.to === this.props.loggedInUser) {
+                if (msg.type === "img") {
                     return (
                         <Card key={msg.timestamp} className='img-to-client '>
                             <img class="image" src={msg.enc} alt="video" />
                         </Card>
                     )
                 }
-                {
-                    return (
-                        <Card key={msg.timestamp} className='msg-to-client col-offset-8 col-4'>
-                            <CardBody className="cardbody"> {msg.text} </CardBody>
-                        </Card>
-                    )
-                }
-
+                return (
+                    <Card key={msg.timestamp} className='msg-to-client col-offset-8 col-4'>
+                        <CardBody className="cardbody" > <MessageText text={msg.text} /> </CardBody>
+                    </Card>
+                )
+            }
+            // This should never happen
+            else {
+                console.log("Invalid state reached...");
+                return <></>;
             }
         })
 

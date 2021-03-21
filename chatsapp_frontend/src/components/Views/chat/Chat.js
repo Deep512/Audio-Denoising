@@ -102,7 +102,7 @@ class Chat extends Component {
             timestamp: Date.now()
         });
         if (this.ws) {
-            this.buffer.map((message) => {
+            this.buffer.forEach((message) => {
                 this.ws.send(message);
             })
             this.buffer.length = 0;
