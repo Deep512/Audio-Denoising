@@ -4,8 +4,8 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { updateMessage, updateHistory } from "../../../redux/actionCreator";
 import { ReactMediaRecorder } from 'react-media-recorder';
-// import {CameraAlt, Mic, Send} from '@material-ui/icons'
-import './input.css'
+import { CameraAlt, Mic, Send } from '@material-ui/icons';
+import './input.css';
 
 const mapStateToProps = state => {
     return {
@@ -26,7 +26,7 @@ class Inputmsg extends Component {
         super(props);
         this.state = {
             selectedFile: "",
-            audioUrl: ""
+            audioFile: ""
         }
         this.enc = null;
         this.msg = '';
@@ -90,7 +90,6 @@ class Inputmsg extends Component {
     }
 
 
-
     render() {
         return (
             <InputGroup className="input-bar" style={{ backgroundColor: "white" }} >
@@ -102,9 +101,42 @@ class Inputmsg extends Component {
                         placeholder="Type a message..."
                         onChange={({ target: { value } }) => this.msg = value}
                     ></FormControl></Col>
-                    {/* <Col xs={1} md={0.5}style={{ padding:"5px 0px 0px 0px"}}>
-                        <Mic style={{ margin: "5px 0px 0px 0px " }}/>
-                    </Col> */}
+
+                    <ReactMediaRecorder
+                        render={({ status, startRecording, stopRecording, mediaBlobUrl }) => {
+                            const start = () => {
+                                startRecording();
+                            }
+
+                            const end = async () => {
+                                stopRecording();
+                                if (!mediaBlobUrl) return;
+                                const blob = await fetch(mediaBlobUrl).then(r => r.blob());
+                                const reader = new FileReader();
+                                reader.readAsDataURL(blob);
+                                reader.onloadend = () => {
+                                    const base64data = reader.result;
+                                    this.imagetoggler = true;
+                                    this.enc = base64data;
+                                }
+                            }
+                            return (
+                                <Col xs={1} md={0.5}
+                                    style={{
+                                        // padding: "5px 0px 0px 0px",
+                                        color: `${status === 'recording' ? 'limegreen' : 'black'}`
+                                    }}>
+                                    <Mic style={{ margin: "10px 0px 0px 0px " }}
+                                        onTouchStart={start}
+                                        onTouchEnd={end}
+                                        onMouseDown={start}
+                                        onMouseUp={end}
+                                        onMouseLeave={end} />
+                                </Col>
+                            )
+                        }
+                        }
+                    />
                     {/* <Col xs={2} md={1} style={{ padding: "5px 0px 0px 0px", textAlign: "center" }}>
                         <label>
                             <form ref={this.fileloader} >
@@ -115,13 +147,14 @@ class Inputmsg extends Component {
                         </label>
                     </Col> */}
 
+
                     <Col xs={2} md={1} className="send-col">
                         <Button className="send" onClick={async () => {
                             console.log("toggler on start of button click", this.imagetoggler)
-                            var input = window.document.getElementById("fileloader")
-                            console.log(input)
+                            // var input = window.document.getElementById("fileloader")
+                            // console.log(input)
 
-                            console.log("file", this.state.selectedFile)
+                            // console.log("file", this.state.selectedFile)
                             if (this.imagetoggler) {
                                 console.log("sending image")
                                 await this.props.updateMessage({

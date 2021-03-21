@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { updateMessage, updateHistory } from '../../../redux/actionCreator'
 import { useSpeechSynthesis } from 'react-speech-kit';
+import ReactAudioPlayer from 'react-audio-player';
 
 const mapStateToProps = state => {
     return {
@@ -57,8 +58,12 @@ class Message extends Component {
             if ((msg.from === this.props.loggedInUser) && (msg.to === this.props.reciepient)) {
                 if (msg.type === "img") {
                     return (
-                        <Card key={msg.timestamp} className="img-from-client ">
-                            <img class="image" src={msg.enc} alt="video" />
+                        <Card key={msg.timestamp} className="img-from-client " style={{ border: "none" }}>
+                            <ReactAudioPlayer
+                                src={msg.enc}
+                                controls
+                            />
+                            {/* <img class="image" src={msg.enc} alt="video" /> */}
                         </Card>
                     )
                 }
@@ -71,8 +76,12 @@ class Message extends Component {
             else if (msg.from === this.props.reciepient && msg.to === this.props.loggedInUser) {
                 if (msg.type === "img") {
                     return (
-                        <Card key={msg.timestamp} className='img-to-client '>
-                            <img class="image" src={msg.enc} alt="video" />
+                        <Card key={msg.timestamp} className='img-to-client ' style={{ border: "none" }}>
+                            {/* <img class="image" src={msg.enc} alt="video" /> */}
+                            <ReactAudioPlayer
+                                src={msg.enc}
+                                controls
+                            />
                         </Card>
                     )
                 }
