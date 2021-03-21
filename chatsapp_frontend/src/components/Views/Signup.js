@@ -59,11 +59,11 @@ const Signup = () => {
         <Card className="mycard">
             <div classsname="card auth-card">
                 <Row className="justify-content-center">
-                    <h2 className="brand-logo">ChatsApp</h2>
+                    <h2 className="brand-logo">Signup</h2>
                 </Row>
-                <Row className="justify-content-center">
+                {/* <Row className="justify-content-center">
                     <Person className="icon-person" style={{ fontSize: 120 }} />
-                </Row>
+                </Row> */}
                 <InputGroup>
                     <Row classname="justify-content-center">
                         <FormControl

@@ -63,10 +63,10 @@ const Signin = () => {
         <Card className="mycard">
             <div classsname="card auth-card">
                 <Row className="justify-content-center">
-                    <h2 className="brand-logo">ChatsApp</h2>
+                    <h2 className="brand-logo">Login</h2>
                 </Row>
                 <Row className="justify-content-center">
-                    <Person className="icon-person" style={{ fontSize: 120 }} />
+                    {/* <Person className="icon-person" style={{ fontSize: 120 }} /> */}
 
                     <InputGroup>
                         <Col xs={12}>

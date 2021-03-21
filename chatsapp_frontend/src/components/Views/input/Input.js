@@ -84,7 +84,7 @@ class Inputmsg extends Component {
 
     resetinput = () => {
         const input = this.inputref.current.reset();
-        const fileinput = this.fileloader.current.reset()
+        // const fileinput = this.fileloader.current.reset()
         console.log("input reset",input)
     }
 
@@ -92,7 +92,7 @@ class Inputmsg extends Component {
     
     render(){
         return(
-            <InputGroup className="input-bar" >
+            <InputGroup className="input-bar" style={{backgroundColor:"white" }} >
                 <form className="col-12 row" ref={this.inputref}>
                     <Col xs={8} md={10}  style={{ padding: "4px 5px 2px 5px" }}><FormControl
 
@@ -104,7 +104,7 @@ class Inputmsg extends Component {
                     {/* <Col xs={1} md={0.5}style={{ padding:"5px 0px 0px 0px"}}>
                         <Mic style={{ margin: "5px 0px 0px 0px " }}/>
                     </Col> */}
-                    <Col xs={2} md={1} style={{ padding: "5px 0px 0px 0px", textAlign: "center" }}>
+                    {/* <Col xs={2} md={1} style={{ padding: "5px 0px 0px 0px", textAlign: "center" }}>
                         <label>
                             <form ref={this.fileloader} >
                                 <input className="fileloader" style={{ display: "none" }} id="fileloader" type="file" onChange={e => this.encrypt(e)}></input>
@@ -112,7 +112,7 @@ class Inputmsg extends Component {
                             </form>
                             <CameraAlt className="camera" style={{ fontSize: 32 ,margin: "0px 0px 0px 0px " }} />
                         </label>
-                    </Col>
+                    </Col> */}
 
                     <Col xs={2} md={1} className="send-col">
                         <Button className="send" onClick={async () => {

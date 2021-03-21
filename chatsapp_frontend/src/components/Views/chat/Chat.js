@@ -140,7 +140,7 @@ class Chat extends Component {
                             <Row >
                                 <Message loggedInUser={this.state.loggedInUser} />
                             </Row>
-                            <Row className="inputrow">
+                            <Row className="inputrow" >
                                 <Inputmsg sendmessage={this.Sendmessage} loggedInUser={this.state.loggedInUser} />
                             </Row>
                         </Col>

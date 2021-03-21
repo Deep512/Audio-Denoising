@@ -1,87 +1,80 @@
-.msgbox{
-  background-image: url('../../../components/images/chat_bgjpg.webp');
-  height:550px;
-  margin:  0px 16px 0px 16px;
-  overflow: auto;
-  flex: auto;
+.msgbox {
+	/* background-image: url('../../../components/images/chat_bgjpg.webp'); */
+	height: 550px;
+	margin: 0px 16px 0px 16px;
+	overflow: auto;
+	flex: auto;
 }
 .msgbox::-webkit-scrollbar {
-     width: 0 !important;
-    display: none;
-    }
-
-.msg-from-client{
-  background-color: teal;
-  margin-left: 66% !important;
-  margin-right: 10px !important;
-  margin-bottom: 20px !important;
+	width: 0 !important;
+	display: none;
 }
 
-
-.msg-to-client{
-  background-color: darkgray;
-  margin-bottom: 20px !important;
-
-}
-.img-from-client{
-  background-color: transparent;
-  float: right;
-  margin-left: 60% !important;
-  margin-right: 10px !important;
-  margin-bottom: 20px !important;
+.msg-from-client {
+	/* background-color: teal; */
+	margin-left: 66% !important;
+	margin-right: 10px !important;
+	margin-bottom: 20px !important;
 }
 
-
-.img-to-client{
-  background-color: transparent;
-  margin-bottom: 20px !important;
-
+.msg-to-client {
+	/* background-color: darkgray; */
+	margin-bottom: 20px !important;
 }
-.image{
-  height: 400px;
-  width: 400px;
-}
-
-@media only screen and (max-width: 600px){
-  .msg-from-client{
-    padding: 5px;
-    font-size: small;
-  background-color: teal;
-  margin-left: 66% !important;
-  margin-right: 10px !important;
-  margin-bottom: 20px !important;
-}
-.cardbody{
-  padding: 0.25rem;
+.img-from-client {
+	background-color: transparent;
+	float: right;
+	margin-left: 60% !important;
+	margin-right: 10px !important;
+	margin-bottom: 20px !important;
 }
 
-.msg-to-client{
-  padding: 5px ;
-  font-size: small;
-  background-color: darkgray;
-  margin-bottom: 20px !important;
-
+.img-to-client {
+	background-color: transparent;
+	margin-bottom: 20px !important;
 }
-.img-from-client{
-  max-width: 400px !important;
-  max-height: 400px !important;
-  background-color: transparent;
-  float: right;
-  margin-left: 60% !important;
-  margin-right: 10px !important;
-  margin-bottom: 20px !important;
+.image {
+	height: 400px;
+	width: 400px;
 }
 
+@media only screen and (max-width: 600px) {
+	.msg-from-client {
+		padding: 5px;
+		font-size: small;
+		/* background-color: teal; */
+		margin-left: 66% !important;
+		margin-right: 10px !important;
+		margin-bottom: 20px !important;
+	}
+	.cardbody {
+		padding: 0.25rem;
+	}
 
-.img-to-client{
-    max-width: 400px !important;
-  max-height: 400px !important;
-  background-color: transparent;
-  margin-bottom: 20px !important;
+	.msg-to-client {
+		padding: 5px;
+		font-size: small;
+		/* background-color: darkgray; */
+		margin-bottom: 20px !important;
+	}
+	.img-from-client {
+		max-width: 400px !important;
+		max-height: 400px !important;
+		background-color: transparent;
+		float: right;
+		margin-left: 60% !important;
+		margin-right: 10px !important;
+		margin-bottom: 20px !important;
+	}
 
-}
-.image{
-  max-height: 180px !important;
-  max-width: 180px !important;
-}
+	.img-to-client {
+		max-width: 400px !important;
+		max-height: 400px !important;
+		background-color: transparent;
+		margin-bottom: 20px !important;
+	}
+	.image {
+		max-height: 180px !important;
+		max-width: 180px !important;
+	}
 }

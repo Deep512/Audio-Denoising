@@ -101,8 +101,8 @@ class Contacts extends Component{
 
     }
     toggler = async () => {
-        this.setState({add: !this.state.add})
-        console.log(this.state.add)
+        // this.setState({add: !this.state.add})
+        // console.log(this.state.add)
 
         await fetch('http://localhost:5000/contacts', {
             method: "get",
@@ -112,7 +112,14 @@ class Contacts extends Component{
         }).then(res => res.json())
             .then(data => { this.setState({ list: data }); console.log(this.state.list) })
     }
-    addcontact = async() => {
+    addcontact = async () => {
+        await fetch('http://localhost:5000/contacts', {
+            method: "get",
+            headers: {
+                "Content-type": "application/json"
+            },
+        }).then(res => res.json())
+            .then(data => { this.setState({ list: data }); console.log(this.state.list) })
         var flag = false;
         this.state.list.forEach(async user => {
             if(user.phone === this.phone){
@@ -166,9 +173,9 @@ class Contacts extends Component{
                                 this.getHistory()
                             }}>
                             <Row>
-                                <Col className="justify-content-center" xs={2}>
-                                    <Person style={{ color: "grey" }} />
-                                </Col>
+                                {/* <Col className="justify-content-center" xs={2}> */}
+                                    {/* <Person style={{ color: "grey" }} /> */}
+                                {/* </Col> */}
                                 <Col xs={8} className="userCol">
                                     <Card.Title className="username" style={{paddingLeft: "15px"}} key={user.id}>{user.username}</Card.Title>
                                 </Col>
@@ -187,7 +194,7 @@ class Contacts extends Component{
                         }}>
                         <Row>
                             <Col className="justify-content-center" xs={2}>
-                                <Person style={{color:"grey"}}/>
+                                {/* <Person style={{color:"grey"}}/> */}
                             </Col>
                             <Col xs={8} className="userCol">
                                 <Card.Title className="username" key={user.id}>{user.username}</Card.Title>
@@ -205,16 +212,16 @@ class Contacts extends Component{
         return (
             <div >
                 <Navbar className="navbar nvbr">
-                    <RecentActors className="icon" style={{ fontSize: 30 }}/>
+                    {/* <RecentActors className="icon" style={{ fontSize: 30 }}/> */}
                     <Navbar.Brand className="brand-logo" style={{margin:"5px 5px 5px 15px"}}>Contacts</Navbar.Brand>
-                    <GroupAdd className="navbar-add" style={{ fontSize: 40}} onClick={this.toggler}></GroupAdd>
+                    {/* <Button className="navbar-add" style={{ fontSize: 15}} onClick={this.toggler}>Add</Button> */}
 
                 </Navbar>
         
 
                 {/* <h2 className="brand-logo">ChatsApp</h2> */}
                 <div className="contact-div">
-                    {this.state.add ?
+                    {/* {this.state.add ? */}
                         <Fragment>
                             <Row className="search-row">
                                 <Col xs={8} md={10} className="search-col" >
@@ -231,7 +238,7 @@ class Contacts extends Component{
                             </Row>
 
                         </Fragment>
-                        : null}
+                        {/* : null} */}
                     {contact}
                 </div>
             </div>

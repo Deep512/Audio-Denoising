@@ -1,74 +1,76 @@
-.scrollbox{
-  height: 600px;
-  background-color: antiquewhite;
-  padding: 5% 0;
-  overflow: auto;
-  flex: auto;
-
+.scrollbox {
+	height: 600px;
+	/* background-color: antiquewhite; */
+	padding: 5% 0;
+	overflow: auto;
+	flex: auto;
 }
-.contact-div::-webkit-scrollbar { width: 0 !important }
-.navbar-add{
-  float: right;
-  margin-right: 5px;
-  position: absolute;
-  right: 0;
+.contact-div::-webkit-scrollbar {
+	width: 0 !important;
 }
-.search{
-  margin-top: 5px;
+.navbar-add {
+	float: right;
+	margin-right: 5px;
+	position: absolute;
+	right: 0;
 }
-
-.search-row{
-  margin: 0px 15px 5px 10px;
+.search {
+	margin-top: 5px;
 }
 
-.add-col{
-  display: flex;
-  padding: 0px;
-  margin-right: 5px;
-  position: absolute;
-  right: 0;
-}
-.search-col{
-  padding-left: 5px;
-  padding-right: 0px;
-}
-.contact-div{
-
-  background-color: antiquewhite;
-  background-attachment: fixed;
-  height:600px ;
-  overflow: auto;
-  flex: auto;
-}
-.navbar{
-  background-color: rgb(140, 207, 202) !important;
-  border: .5px ridge;
-  border-color: rgb(73, 155, 141);
-}
-.search-add{
-  margin-right: 20%;
+.search-row {
+	margin: 0px 15px 5px 10px;
 }
 
-@media only screen and (max-width: 400px){
-  .brand-logo{
-    margin: 0px;
-    display: none;
-  }
-  .username{
-    font-size: small;
-    margin: 0px 0px 0px 10px;
-    padding: 0;
-  }
-  .userCol{
-    margin: 0px !important;
-    padding-right: 0px !important;
-  }
-  .person{
-    font-size: small;
-  }
-  
-  .navbar-add{
-    /* margin-left: 10px; */
-  float: right;
+.add-col {
+	display: flex;
+	padding: 0px;
+	margin-right: 5px;
+	position: absolute;
+	right: 0;
 }
+.search-col {
+	padding-left: 5px;
+	padding-right: 0px;
+}
+.contact-div {
+	/* background-color: antiquewhite; */
+	border-color: black;
+	background-attachment: fixed;
+	height: 600px;
+	overflow: auto;
+	flex: auto;
+}
+.navbar {
+	/* background-color: rgb(140, 207, 202) !important; */
+	border: 0.5px ridge;
+	/* border-color: rgb(73, 155, 141); */
+	border-color: black;
+}
+.search-add {
+	margin-right: 20%;
+}
+
+@media only screen and (max-width: 400px) {
+	.brand-logo {
+		margin: 0px;
+		display: none;
+	}
+	.username {
+		font-size: small;
+		margin: 0px 0px 0px 10px;
+		padding: 0;
+	}
+	.userCol {
+		margin: 0px !important;
+		padding-right: 0px !important;
+	}
+	.person {
+		font-size: small;
+	}
+
+	.navbar-add {
+		/* margin-left: 10px; */
+		float: right;
+	}
 }
