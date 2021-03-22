@@ -27,7 +27,7 @@ var undeliveredMessages = {};
 
 
 const TEXT_COMMUNICATION = "text";
-const IMAGE = "img"
+const IMAGE = "audio"
 
 
 async function getHistory(from,to){

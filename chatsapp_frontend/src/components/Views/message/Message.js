@@ -56,7 +56,7 @@ class Message extends Component {
         console.log("HIstory used to display", t_hstry)
         const history_messages = t_hstry.map((msg) => {
             if ((msg.from === this.props.loggedInUser) && (msg.to === this.props.reciepient)) {
-                if (msg.type === "img") {
+                if (msg.type === "audio") {
                     return (
                         <Card key={msg.timestamp} className="img-from-client " style={{ border: "none" }}>
                             <ReactAudioPlayer
@@ -74,7 +74,7 @@ class Message extends Component {
                 )
             }
             else if (msg.from === this.props.reciepient && msg.to === this.props.loggedInUser) {
-                if (msg.type === "img") {
+                if (msg.type === "audio") {
                     return (
                         <Card key={msg.timestamp} className='img-to-client ' style={{ border: "none" }}>
                             {/* <img class="image" src={msg.enc} alt="video" /> */}

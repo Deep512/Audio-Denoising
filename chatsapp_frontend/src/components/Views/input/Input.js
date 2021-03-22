@@ -160,7 +160,7 @@ class Inputmsg extends Component {
                                 await this.props.updateMessage({
                                     from: this.props.loggedInUser,
                                     to: this.props.reciepient,
-                                    type: "img",
+                                    type: "audio",
                                     enc: this.enc
                                 })
                                 this.imagetoggler = false;
