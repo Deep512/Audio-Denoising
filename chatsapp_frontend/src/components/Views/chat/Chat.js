@@ -10,12 +10,13 @@ const Chat = (props) => {
 	const dispatch = useDispatch();
 	const historys = useHistory();
 	const history = useSelector((state) => state.history);
+	const [ptr, setPtr] = useState(0);
 
 	const { speak, voices } = useSpeechSynthesis();
 
 	let voice = null;
 	voices.forEach((v) => {
-		if (v.lang === "hi-IN") {
+		if (v.lang === "hi-EN") {
 			voice = v;
 		}
 	});
@@ -44,6 +45,7 @@ const Chat = (props) => {
 					console.log("data from server:", result);
 					dispatch(updateHistory(result));
 					console.log("history from contact: ", result);
+					setPtr(result.length - 1);
 				})
 				.catch((error) => console.log("error", error));
 		}
@@ -58,20 +60,91 @@ const Chat = (props) => {
 		M.toast({ html: data });
 	};
 
+	const readMessage = async (msg) => {
+		if (msg === undefined) return;
+		sayThis(`From ${msg.from} To ${msg.to} `);
+		if (msg.type === "text") {
+			sayThis(
+				`The text message was ${
+					msg.text.charAt(0).toUpperCase() + msg.text.slice(1)
+				}`
+			);
+		} else {
+			sayThis(`The audio message was `);
+			await new Promise((resolve) => setTimeout(resolve, 6000));
+			const audio = new Audio(msg.enc);
+			audio.play();
+		}
+	};
+
 	return (
 		<div className="maindiv">
 			<div className="buttons">
 				<div
 					className="top-left button"
-					onClick={() => {
-						console.log(props.recipient);
-						console.log(history);
+					onClick={async () => {
+						if (history !== []) {
+							if (ptr == 0) {
+								sayThis("No more previous messages");
+							} else {
+								setPtr(ptr - 1);
+								var msg = history[ptr - 1];
+								console.log(msg);
+								readMessage(msg);
+								// sayThis(`From ${msg.from} To ${msg.to} `);
+								// if (msg.type === "text") {
+								// 	sayThis(
+								// 		`The text message was ${
+								// 			msg.text.charAt(0).toUpperCase() + msg.text.slice(1)
+								// 		}`
+								// 	);
+								// } else {
+								// 	sayThis(`The audio message was `);
+								// 	await new Promise((resolve) => setTimeout(resolve, 6000));
+								// 	const audio = new Audio(msg.enc);
+								// 	audio.play();
+								// }
+							}
+							// sayThis(frndlist[ptr]);
+						} else {
+							sayThis(`There has been no conversation with ${props.recipient}`);
+						}
 					}}
 				>
-					{" "}
-					TL
+					Left
 				</div>
-				<div className="top-right button"> TR</div>
+				<div
+					className="top-right button"
+					onClick={async () => {
+						if (history !== []) {
+							if (ptr == history.length - 1) {
+								sayThis("No more new messages");
+							} else {
+								setPtr(ptr + 1);
+								var msg = history[ptr + 1];
+								console.log(msg);
+								sayThis(`From ${msg.from} To ${msg.to} `);
+								if (msg.type === "text") {
+									sayThis(
+										`The text message was ${
+											msg.text.charAt(0).toUpperCase() + msg.text.slice(1)
+										}`
+									);
+								} else {
+									sayThis(`The audio message was `);
+									await new Promise((resolve) => setTimeout(resolve, 6000));
+									const audio = new Audio(msg.enc);
+									audio.play();
+								}
+							}
+							// sayThis(frndlist[ptr]);
+						} else {
+							sayThis(`There has been no conversation with ${props.recipient}`);
+						}
+					}}
+				>
+					Right
+				</div>
 				<div
 					className="bottom-left button"
 					onClick={() => {
@@ -82,12 +155,33 @@ const Chat = (props) => {
 					Back
 				</div>
 				<div className="bottom-right button">BR</div>
-				<div className="center">Center</div>
+				<div
+					className="center"
+					onClick={() => {
+						if (history !== []) {
+							setPtr(history.length - 1);
+							sayThis("Jumping back to latest message");
+							readMessage(history[history.length - 1]);
+						} else {
+							sayThis(`There has been no conversation with ${props.recipient}`);
+						}
+					}}
+				>
+					Latest
+				</div>
 			</div>
 			<div
 				className="current"
 				onClick={() => {
-					sayThis(`You are on Chat page with ${props.recipient}`);
+					console.log(history);
+					sayThis(
+						`You are on Chat page with ${props.recipient}. ${
+							history.length !== 0
+								? "Current message is "
+								: "There are no messages here."
+						}`
+					);
+					readMessage(history[ptr]);
 				}}
 			>
 				Current
