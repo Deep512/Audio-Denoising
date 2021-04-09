@@ -1,294 +1,338 @@
 import React, { Component, Fragment, useState, useEffect } from "react";
 import { Card, Row, Col, Navbar, FormControl } from "react-bootstrap";
 import {
-	RecentActors,
-	Person,
-	FiberManualRecord,
-	GroupAdd,
+    RecentActors,
+    Person,
+    FiberManualRecord,
+    GroupAdd,
 } from "@material-ui/icons";
 import M from "materialize-css";
 import "./contacts.css";
 import { connect } from "react-redux";
 import { withRouter, useHistory } from "react-router-dom";
 import {
-	updateReciepient,
-	updateLoggedInUser,
-	updateHistory,
+    updateReciepient,
+    updateLoggedInUser,
+    updateHistory,
 } from "../../../redux/actionCreator";
 import { useDispatch, useSelector } from "react-redux";
 import { Button } from "reactstrap";
-import { useSpeechSynthesis } from "react-speech-kit";
+import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 
 const Contacts = (props) => {
-	const historys = useHistory();
-	const dispatch = useDispatch();
-	const reciepient = useSelector((state) => state.reciepient);
-	const message = useSelector((state) => state.message);
-	const history = useSelector((state) => state.history);
-	const userLoggedIn = useSelector((state) => state.loggedInUser);
-	const [list, setList] = useState([]);
-	const [frndlist, setFrndList] = useState([]);
-	const [add, setAdd] = useState(false);
-	const [online, setOnline] = useState([userLoggedIn]);
-	const [ptr, setPtr] = useState(0);
-	const { speak, voices } = useSpeechSynthesis();
+    const historys = useHistory();
+    const dispatch = useDispatch();
+    const reciepient = useSelector((state) => state.reciepient);
+    const message = useSelector((state) => state.message);
+    const history = useSelector((state) => state.history);
+    const userLoggedIn = useSelector((state) => state.loggedInUser);
+    const [list, setList] = useState([]);
+    const [frndlist, setFrndList] = useState([]);
+    const [add, setAdd] = useState(false);
+    const [online, setOnline] = useState([userLoggedIn]);
+    const [ptr, setPtr] = useState(0);
+    const { speak, voices } = useSpeechSynthesis();
+    const [newContact, setNewContact] = useState("");
+    const { listen, listening, stop } = useSpeechRecognition({
+        onResult: (result) => {
+            setNewContact(result.replace(/ /g, ""));
+        },
+    });
 
-	let voice = null;
-	voices.forEach((v) => {
-		if (v.lang === "hi-IN") {
-			voice = v;
-		}
-	});
+    const startListening = () => {
+        if (!listening) listen();
+    };
 
-	var status = "";
-	var phone = "";
+    const stopListening = () => {
+        if (listening) stop();
+    };
 
-	useEffect(() => {
-		async function anyFunction() {
-			await fetch("http://localhost:5000/contacts", {
-				method: "get",
-				headers: {
-					"Content-type": "application/json",
-				},
-			})
-				.then((res) => res.json())
-				.then((data) => {
-					setList(data);
-				});
+    let voice = null;
+    voices.forEach((v) => {
+        if (v.lang === "hi-IN") {
+            voice = v;
+        }
+    });
 
-			setTimeout(async () => {
-				await fetch("http://localhost:5000/contacts/friends", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						username: props.loggedinUser,
-					}),
-				})
-					.then((response) => response.json())
-					.then((data) => {
-						setFrndList(data);
-					})
-					.catch((err) => console.log(err));
-			}, 50);
+    var status = "";
+    var phone = "";
 
-			setInterval(async () => {
-				await fetch("http://localhost:5000/message/clients", { method: "GET" })
-					.then((response) => response.json())
-					.then((data) => {
-						setOnline(data);
-						// this.setState({ online: data });
-						// console.log(online);
+    useEffect(() => {
+        async function anyFunction() {
+            await fetch("http://localhost:5000/contacts", {
+                method: "get",
+                headers: {
+                    "Content-type": "application/json",
+                },
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                    setList(data);
+                });
 
-						// console.log(this.state.online)
-					});
-			}, 500);
-		}
-		anyFunction();
-	}, [props.loggedInUser]);
+            setTimeout(async () => {
+                await fetch("http://localhost:5000/contacts/friends", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: props.loggedinUser,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setFrndList(data);
+                    })
+                    .catch((err) => console.log(err));
+            }, 50);
 
-	const getHistory = async () => {
-		var myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/json");
+            setInterval(async () => {
+                await fetch("http://localhost:5000/message/clients", {
+                    method: "GET",
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setOnline(data);
+                        // this.setState({ online: data });
+                        // console.log(online);
 
-		var raw = JSON.stringify({
-			to: reciepient,
-			from: props.loggedinUser,
-		});
+                        // console.log(this.state.online)
+                    });
+            }, 500);
+        }
+        anyFunction();
+    }, [props.loggedInUser]);
 
-		var requestOptions = {
-			method: "POST",
-			headers: myHeaders,
-			body: raw,
-			redirect: "follow",
-			credentials: "include",
-		};
+    const getHistory = async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
 
-		await fetch("http://localhost:5000/message/history", requestOptions)
-			.then((response) => response.json())
-			.then(async (result) => {
-				dispatch(updateHistory(result));
-				console.log("history from contact: ", history);
-			})
-			.catch((error) => console.log("error", error));
-	};
+        var raw = JSON.stringify({
+            to: reciepient,
+            from: props.loggedinUser,
+        });
 
-	const addcontact = async () => {
-		await fetch("http://localhost:5000/contacts", {
-			method: "get",
-			headers: {
-				"Content-type": "application/json",
-			},
-		})
-			.then((res) => res.json())
-			.then((data) => {
-				setList(data);
-				// this.setState({ list: data });
-				console.log(list);
-				// console.log(this.state.list);
-			});
-		var flag = false;
-		list.forEach(async (user) => {
-			if (user.phone === phone) {
-				flag = true;
-				await fetch("http://localhost:5000/contacts/addcontact", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						username: props.loggedinUser,
-						friend: user.username,
-					}),
-				})
-					.then((response) => response.json())
-					.then((data) => console.log(data))
-					.catch((err) => console.log(err));
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+            credentials: "include",
+        };
 
-				await fetch("http://localhost:5000/contacts/friends", {
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-					},
-					body: JSON.stringify({
-						username: props.loggedinUser,
-					}),
-				})
-					.then((response) => response.json())
-					.then((data) => {
-						setFrndList(data);
-						console.log("friendlist", frndlist);
-					})
-					.catch((err) => console.log(err));
-				setAdd(false);
-			}
-			return;
-		});
-		if (flag === false) M.toast({ html: "User doesnt exist!!" });
-		return;
-	};
+        await fetch("http://localhost:5000/message/history", requestOptions)
+            .then((response) => response.json())
+            .then(async (result) => {
+                dispatch(updateHistory(result));
+                console.log("history from contact: ", history);
+            })
+            .catch((error) => console.log("error", error));
+    };
 
-	const sayThis = (data) => {
-		speak({
-			text: data,
-			voice,
-		});
-		M.toast({ html: data });
-	};
+    const addcontact = async () => {
+        await fetch("http://localhost:5000/contacts", {
+            method: "get",
+            headers: {
+                "Content-type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                setList(data);
+                // this.setState({ list: data });
+                console.log(list);
+                // console.log(this.state.list);
+            });
+        var flag = false;
+        list.forEach(async (user) => {
+            if (user.phone === phone) {
+                flag = true;
+                await fetch("http://localhost:5000/contacts/addcontact", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: props.loggedinUser,
+                        friend: user.username,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => console.log(data))
+                    .catch((err) => console.log(err));
 
-	return (
-		<div className="maindiv">
-			<div className="buttons">
-				<div
-					className="top-left button"
-					onClick={async () => {
-						if (frndlist !== []) {
-							if (ptr == 0) {
-								await setPtr(frndlist.length - 1);
-								console.log(frndlist[frndlist.length - 1]);
-								if (
-									online.indexOf(frndlist[frndlist.length - 1].username) > -1
-								) {
-									status = " online";
-								} else {
-									status = " not online";
-								}
-								sayThis(frndlist[frndlist.length - 1].username + status);
-							} else {
-								await setPtr(ptr - 1);
-								console.log(frndlist[ptr - 1]);
+                await fetch("http://localhost:5000/contacts/friends", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        username: props.loggedinUser,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        setFrndList(data);
+                        console.log("friendlist", frndlist);
+                    })
+                    .catch((err) => console.log(err));
+                setAdd(false);
+            }
+            return;
+        });
+        if (flag === false) M.toast({ html: "User doesnt exist!!" });
+        return;
+    };
 
-								if (online.indexOf(frndlist[ptr - 1].username) > -1) {
-									status = " online";
-								} else {
-									status = " not online";
-								}
-								sayThis(frndlist[ptr - 1].username + status);
-							}
-							// sayThis(frndlist[ptr]);
-						} else {
-							sayThis("You have no friends, You are going to Die Alone!");
-						}
-					}}
-				>
-					Left
-				</div>
-				<div
-					className="top-right button"
-					onClick={async () => {
-						if (frndlist !== []) {
-							if (ptr == frndlist.length - 1) {
-								setPtr(0);
-								console.log(frndlist[0]);
+    const sayThis = (data) => {
+        speak({
+            text: data,
+            voice,
+        });
+        M.toast({ html: data });
+    };
 
-								if (online.indexOf(frndlist[0].username) > -1) {
-									status = " online";
-								} else {
-									status = " not online";
-								}
-								sayThis(frndlist[0].username + status);
-							} else {
-								setPtr(ptr + 1);
-								console.log(frndlist[ptr + 1]);
-								if (online.indexOf(frndlist[ptr + 1].username) > -1) {
-									status = " online";
-								} else {
-									status = " not online";
-								}
-								sayThis(frndlist[ptr + 1].username + status);
-							}
-							// sayThis(frndlist[ptr]);
-						} else {
-							sayThis("You have no friends, You are going to Die Alone!");
-						}
-					}}
-				>
-					Right
-				</div>
-				<div
-					className="bottom-left button"
-					onClick={() => {
-						props.logout();
-					}}
-				>
-					Logout
-				</div>
-				<div
-					className="bottom-right button"
-					onClick={async () => {
-						if (frndlist !== []) {
-							console.log(frndlist[ptr].username);
-							dispatch(updateReciepient(frndlist[ptr].username));
-							sayThis(`Entering chat with ${frndlist[ptr].username}`);
-							// console.log(reciepient);
-							getHistory();
-							historys.push("/usr/chat");
-						} else {
-							sayThis("You have no friends, You are going to Die Alone!");
-						}
-					}}
-				>
-					Chat
-				</div>
-				<div className="center">Center</div>
-			</div>
-			<div
-				className="current"
-				onClick={() => {
-					sayThis(
-						`You are on Contacts page.${
-							frndlist !== []
-								? `The chat pointer is on ${frndlist[ptr].username}`
-								: `You have no friends.`
-						}`
-					);
-				}}
-			>
-				Current
-			</div>
-		</div>
-	);
+    return (
+        <div className="maindiv">
+            <div className="buttons">
+                <div
+                    className="top-left button"
+                    onClick={async () => {
+                        if (frndlist !== []) {
+                            if (ptr == 0) {
+                                await setPtr(frndlist.length - 1);
+                                console.log(frndlist[frndlist.length - 1]);
+                                if (
+                                    online.indexOf(
+                                        frndlist[frndlist.length - 1].username
+                                    ) > -1
+                                ) {
+                                    status = " online";
+                                } else {
+                                    status = " not online";
+                                }
+                                sayThis(
+                                    frndlist[frndlist.length - 1].username +
+                                        status
+                                );
+                            } else {
+                                await setPtr(ptr - 1);
+                                console.log(frndlist[ptr - 1]);
+
+                                if (
+                                    online.indexOf(frndlist[ptr - 1].username) >
+                                    -1
+                                ) {
+                                    status = " online";
+                                } else {
+                                    status = " not online";
+                                }
+                                sayThis(frndlist[ptr - 1].username + status);
+                            }
+                            // sayThis(frndlist[ptr]);
+                        } else {
+                            sayThis(
+                                "You have no friends, You are going to Die Alone!"
+                            );
+                        }
+                    }}
+                >
+                    Left
+                </div>
+                <div
+                    className="top-right button"
+                    onClick={async () => {
+                        if (frndlist !== []) {
+                            if (ptr == frndlist.length - 1) {
+                                setPtr(0);
+                                console.log(frndlist[0]);
+
+                                if (online.indexOf(frndlist[0].username) > -1) {
+                                    status = " online";
+                                } else {
+                                    status = " not online";
+                                }
+                                sayThis(frndlist[0].username + status);
+                            } else {
+                                setPtr(ptr + 1);
+                                console.log(frndlist[ptr + 1]);
+                                if (
+                                    online.indexOf(frndlist[ptr + 1].username) >
+                                    -1
+                                ) {
+                                    status = " online";
+                                } else {
+                                    status = " not online";
+                                }
+                                sayThis(frndlist[ptr + 1].username + status);
+                            }
+                            // sayThis(frndlist[ptr]);
+                        } else {
+                            sayThis(
+                                "You have no friends, You are going to Die Alone!"
+                            );
+                        }
+                    }}
+                >
+                    Right
+                </div>
+                <div
+                    className="bottom-left button"
+                    onClick={() => {
+                        props.logout();
+                    }}
+                >
+                    Logout
+                </div>
+                <div
+                    className="bottom-right button"
+                    onClick={async () => {
+                        if (frndlist !== []) {
+                            console.log(frndlist[ptr].username);
+                            dispatch(updateReciepient(frndlist[ptr].username));
+                            sayThis(
+                                `Entering chat with ${frndlist[ptr].username}`
+                            );
+                            // console.log(reciepient);
+                            getHistory();
+                            historys.push("/usr/chat");
+                        } else {
+                            sayThis(
+                                "You have no friends, You are going to Die Alone!"
+                            );
+                        }
+                    }}
+                >
+                    Chat
+                </div>
+                <div
+                    className="center"
+                    onTouchStart={startListening}
+                    onTouchEnd={stopListening}
+                    onMouseDown={startListening}
+                    onMouseUp={stopListening}
+                    onMouseLeave={stopListening}
+                >
+                    {listening ? "Listening..." : "Add"}
+                </div>
+            </div>
+            <div
+                className="current"
+                onClick={() => {
+                    sayThis(
+                        `You are on Contacts page.${
+                            frndlist !== []
+                                ? `The chat pointer is on ${frndlist[ptr].username}`
+                                : `You have no friends.`
+                        }`
+                    );
+                }}
+            >
+                Current
+            </div>
+        </div>
+    );
 };
 
 export default Contacts;
