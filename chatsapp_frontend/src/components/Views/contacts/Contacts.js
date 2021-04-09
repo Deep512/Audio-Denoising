@@ -37,6 +37,10 @@ const Contacts = (props) => {
         onResult: (result) => {
             setNewContact(result.replace(/ /g, ""));
         },
+        onEnd: () => {
+            // call the add contact thing from here
+            console.log("Final number:", newContact);
+        },
     });
 
     const startListening = () => {
