@@ -9,173 +9,184 @@ import Infobar from "../infobar/Infobar";
 import { connect } from "react-redux";
 import { withRouter, useHistory, useParams } from "react-router-dom";
 import {
-	updateHistory,
-	updateLoggedInUser,
+    updateHistory,
+    updateLoggedInUser,
 } from "../../../redux/actionCreator";
 import { Route, BrowserRouter, Switch, Redirect } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import "./user.css";
+import Recorder from "../recorder/Recorder";
 
 const User = (props) => {
-	const dispatch = useDispatch();
-	const historys = useHistory();
-	const { type } = useParams();
-	const reciepient = useSelector((state) => state.reciepient);
-	const message = useSelector((state) => state.message);
-	const history = useSelector((state) => state.history);
-	const loggedInUser = useSelector((state) => state.loggedInUser);
-	// const [loggedInUser, setLoggedInUser] = useState("");
-	var server = "http://localhost:5000/";
-	var ws_server = "ws://localhost:5000/";
-	var ws = new WebSocket(ws_server + "message");
-	var buffer = [];
-	// this.history = [];
-	// var logout = this.logout.bind(this);
+    const dispatch = useDispatch();
+    const historys = useHistory();
+    const { type } = useParams();
+    const reciepient = useSelector((state) => state.reciepient);
+    const message = useSelector((state) => state.message);
+    const history = useSelector((state) => state.history);
+    const loggedInUser = useSelector((state) => state.loggedInUser);
+    // const [loggedInUser, setLoggedInUser] = useState("");
+    var server = "http://localhost:5000/";
+    var ws_server = "ws://localhost:5000/";
+    var ws = new WebSocket(ws_server + "message");
+    var buffer = [];
+    // this.history = [];
+    // var logout = this.logout.bind(this);
 
-	const getHistory = async () => {
-		var myHeaders = new Headers();
-		myHeaders.append("Content-Type", "application/json");
+    const getHistory = async () => {
+        var myHeaders = new Headers();
+        myHeaders.append("Content-Type", "application/json");
 
-		var raw = JSON.stringify({
-			to: reciepient,
-			from: loggedInUser,
-		});
+        var raw = JSON.stringify({
+            to: reciepient,
+            from: loggedInUser,
+        });
 
-		var requestOptions = {
-			method: "POST",
-			headers: myHeaders,
-			body: raw,
-			redirect: "follow",
-			credentials: "include",
-		};
+        var requestOptions = {
+            method: "POST",
+            headers: myHeaders,
+            body: raw,
+            redirect: "follow",
+            credentials: "include",
+        };
 
-		await fetch("http://localhost:5000/message/history", requestOptions)
-			.then((response) => response.json())
-			.then(async (result) => {
-				console.log("data from server:", result);
-				dispatch(updateHistory(result));
-				console.log("history from contact: ", history);
-			})
-			.catch((error) => console.log("error", error));
-	};
+        await fetch("http://localhost:5000/message/history", requestOptions)
+            .then((response) => response.json())
+            .then(async (result) => {
+                console.log("data from server:", result);
+                dispatch(updateHistory(result));
+                console.log("history from contact: ", history);
+            })
+            .catch((error) => console.log("error", error));
+    };
 
-	useEffect(() => {
-		async function anyFunction() {
-			ws.onerror = (err) => {
-				console.log(err);
-			};
-			ws.onmessage = (message) => {
-				console.log(message.data);
-				getHistory();
-			};
-			await fetch(server + "self", {
-				method: "GET",
-				headers: {
-					Accept: "application/json",
-					"Content-Type": "application/json",
-				},
-				credentials: "include",
-			})
-				.then((resp) => resp.json())
-				.then(async (data) => {
-					console.log("data from fetch(/self): ", data);
-					dispatch(updateLoggedInUser(data.username));
-					// setLoggedInUser(data.username);
-					// console.log("Loggedin User: ", this.state.loggedInUser);
-				});
-		}
-		anyFunction();
-	}, [loggedInUser]);
+    useEffect(() => {
+        async function anyFunction() {
+            ws.onerror = (err) => {
+                console.log(err);
+            };
+            ws.onmessage = (message) => {
+                console.log(message.data);
+                getHistory();
+            };
+            await fetch(server + "self", {
+                method: "GET",
+                headers: {
+                    Accept: "application/json",
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+            })
+                .then((resp) => resp.json())
+                .then(async (data) => {
+                    console.log("data from fetch(/self): ", data);
+                    dispatch(updateLoggedInUser(data.username));
+                    // setLoggedInUser(data.username);
+                    // console.log("Loggedin User: ", this.state.loggedInUser);
+                });
+        }
+        anyFunction();
+    }, [loggedInUser]);
 
-	const Sendmessage = () => {
-		console.log("Message body in websocket function:", message);
-		let resp = JSON.stringify({
-			from: loggedInUser,
-			to: reciepient,
-			type: message.type,
-			enc: message.enc,
-			text: message.text,
-			timestamp: Date.now(),
-		});
-		if (ws) {
-			buffer.forEach((message) => {
-				ws.send(message);
-			});
-			buffer.length = 0;
-			ws.send(resp);
-		} else {
-			console.log("ws not available");
-			if (!buffer.includes(resp)) {
-				buffer.push(resp);
-			}
-		}
-	};
+    const Sendmessage = () => {
+        console.log("Message body in websocket function:", message);
+        let resp = JSON.stringify({
+            from: loggedInUser,
+            to: reciepient,
+            type: message.type,
+            enc: message.enc,
+            text: message.text,
+            timestamp: Date.now(),
+        });
+        if (ws) {
+            buffer.forEach((message) => {
+                ws.send(message);
+            });
+            buffer.length = 0;
+            ws.send(resp);
+        } else {
+            console.log("ws not available");
+            if (!buffer.includes(resp)) {
+                buffer.push(resp);
+            }
+        }
+    };
 
-	const logout = () => {
-		ws.close();
-		fetch("http://localhost:5000/auth/logout", { method: "GET" })
-			.then((data) => {
-				historys.push("/signin");
-				// this.props.history.push("/signin");
-				// console.log(this.props.history);
-			})
-			.catch((err) => console.log(err));
-	};
+    const logout = () => {
+        ws.close();
+        fetch("http://localhost:5000/auth/logout", { method: "GET" })
+            .then((data) => {
+                historys.push("/signin");
+                // this.props.history.push("/signin");
+                // console.log(this.props.history);
+            })
+            .catch((err) => console.log(err));
+    };
 
-	if (loggedInUser !== "") {
-		switch (type) {
-			case "contacts": {
-				return <Contacts loggedinUser={loggedInUser} logout={logout} />;
-			}
-			case "chat": {
-				if (reciepient !== undefined) {
-					return <Chat loggedinUser={loggedInUser} recipient={reciepient} />;
-				}
-			}
-			default: {
-				return null;
-			}
-		}
-	} else {
-		return null;
-	}
-	// if (loggedInUser !== "") {
-	// 	return (
-	// 		<div>
-	// 			<Route
-	// 				path="/usr/contacts"
-	// 				render={() => {
-	// 					return <Contacts loggedinUser={loggedInUser} logout={logout} />;
-	// 				}}
-	// 			/>
-	// 			<Route
-	// 				path="/usr/chat"
-	// 				render={() => {
-	// 					return <p>HII</p>;
-	// 				}}
-	// 			/>
-	// 		</div>
-	// <div className="maindiv">
-	// 	<Container fluid className="container  m-md-auto ">
-	// 		<Row>
-	// 			<Col xs={4} classname="left-col">
-	// 				<Contacts loggedinUser={this.state.loggedInUser} />
-	// 			</Col>
-	// 			<Col xs={8} className="infobar-row">
-	// 				<Infobar username={this.props.reciepient} logOut={this.logout} />
-	// 				<Row>
-	// 					<Message loggedInUser={this.state.loggedInUser} />
-	// 				</Row>
-	// 				<Row className="inputrow">
-	// 					<Inputmsg
-	// 						sendmessage={this.Sendmessage}
-	// 						loggedInUser={this.state.loggedInUser}
-	// 					/>
-	// 				</Row>
-	// 			</Col>
-	// 		</Row>
-	// 	</Container>
-	/* <div className="buttons">
+    if (loggedInUser !== "") {
+        switch (type) {
+            case "contacts": {
+                return <Contacts loggedinUser={loggedInUser} logout={logout} />;
+            }
+            case "chat": {
+                if (reciepient !== undefined) {
+                    return (
+                        <Chat
+                            loggedinUser={loggedInUser}
+                            recipient={reciepient}
+                        />
+                    );
+                }
+            }
+            case "recorder": {
+                if (reciepient !== undefined) {
+                    return <Recorder sendMessage={Sendmessage} />;
+                }
+            }
+            default: {
+                return null;
+            }
+        }
+    } else {
+        return null;
+    }
+    // if (loggedInUser !== "") {
+    // 	return (
+    // 		<div>
+    // 			<Route
+    // 				path="/usr/contacts"
+    // 				render={() => {
+    // 					return <Contacts loggedinUser={loggedInUser} logout={logout} />;
+    // 				}}
+    // 			/>
+    // 			<Route
+    // 				path="/usr/chat"
+    // 				render={() => {
+    // 					return <p>HII</p>;
+    // 				}}
+    // 			/>
+    // 		</div>
+    // <div className="maindiv">
+    // 	<Container fluid className="container  m-md-auto ">
+    // 		<Row>
+    // 			<Col xs={4} classname="left-col">
+    // 				<Contacts loggedinUser={this.state.loggedInUser} />
+    // 			</Col>
+    // 			<Col xs={8} className="infobar-row">
+    // 				<Infobar username={this.props.reciepient} logOut={this.logout} />
+    // 				<Row>
+    // 					<Message loggedInUser={this.state.loggedInUser} />
+    // 				</Row>
+    // 				<Row className="inputrow">
+    // 					<Inputmsg
+    // 						sendmessage={this.Sendmessage}
+    // 						loggedInUser={this.state.loggedInUser}
+    // 					/>
+    // 				</Row>
+    // 			</Col>
+    // 		</Row>
+    // 	</Container>
+    /* <div className="buttons">
 					<div className="top-left button"> TL</div>
 					<div className="top-right button"> TR</div>
 					<div className="bottom-left button">BL</div>
@@ -183,11 +194,11 @@ const User = (props) => {
 					<div className="center">Center</div>
 				</div>
 				<div className="current">Current</div> */
-	// </div>
-	// 	);
-	// } else {
-	// 	return null;
-	// }
+    // </div>
+    // 	);
+    // } else {
+    // 	return null;
+    // }
 };
 
 export default User;

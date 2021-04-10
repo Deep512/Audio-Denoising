@@ -1,5 +1,5 @@
-import * as actionTypes from '../actionTypes'
-export const Message = (state = "", action) => {
+import * as actionTypes from "../actionTypes";
+export const Message = (state = {}, action) => {
     switch (action.type) {
         case actionTypes.UPDATE_MSG:
             var new_message = action.payload;
@@ -7,4 +7,4 @@ export const Message = (state = "", action) => {
         default:
             return state;
     }
-}
+};

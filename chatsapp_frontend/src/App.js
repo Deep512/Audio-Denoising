@@ -6,33 +6,35 @@ import Signup from "./components/Views/Signup";
 import User from "./components/Views/user/User";
 import { Provider } from "react-redux";
 import { ConfigureStore } from "./redux/configureStore";
+import { createBrowserHistory } from "history";
 
+const appHistory = createBrowserHistory();
 const store = ConfigureStore();
 
 class App extends Component {
-	render() {
-		return (
-			<Provider store={store}>
-				<BrowserRouter>
-					<Switch>
-						<Route exact path="/">
-							<Signin />
-						</Route>
+    render() {
+        return (
+            <Provider store={store}>
+                <BrowserRouter history={appHistory}>
+                    <Switch>
+                        <Route exact path="/">
+                            <Signin />
+                        </Route>
 
-						<Route path="/signup">
-							<Signup />
-						</Route>
+                        <Route path="/signup">
+                            <Signup />
+                        </Route>
 
-						<Route path="/usr/:type">
-							<User />
-						</Route>
+                        <Route path="/usr/:type">
+                            <User />
+                        </Route>
 
-						<Redirect to="/" />
-					</Switch>
-				</BrowserRouter>
-			</Provider>
-		);
-	}
+                        <Redirect to="/" />
+                    </Switch>
+                </BrowserRouter>
+            </Provider>
+        );
+    }
 }
 
 export default App;
