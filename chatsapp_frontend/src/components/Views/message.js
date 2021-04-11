@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import M from "materialize-css";
+import { getCookie } from "../../hooks/useCookie";
 
 const Message = () => {
 	const [msg, setMsg] = useState("");
 	const [to, setTo] = useState("");
 	const history = useHistory();
-	var server = "http://localhost:5000/";
-	var ws_server = "ws://localhost:5000/";
+	var server = "http://stormy-tundra-81519.herokuapp.com/";
+	var ws_server = "ws://stormy-tundra-81519.herokuapp.com/";
 	var phone;
 
 	const ws = new WebSocket(ws_server + "message");
@@ -20,13 +21,16 @@ const Message = () => {
 	let buffer = [];
 
 	const postMessage = async () => {
-		await fetch(server + "self", {
+		const username = getCookie('username');
+		await fetch(server + `self/${username}`, {
 			method: "GET",
 			headers: {
 				Accept: "application/json",
 				"Content-Type": "application/json",
 			},
 			credentials: "include",
+			withCredentials: true,
+			
 		})
 			.then((resp) => resp.json())
 			.then((data) => {

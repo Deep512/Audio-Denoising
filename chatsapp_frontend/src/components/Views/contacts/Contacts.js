@@ -58,7 +58,7 @@ const Contacts = (props) => {
 
 	useEffect(() => {
 		async function anyFunction() {
-			await fetch("http://localhost:5000/contacts", {
+			await fetch("http://stormy-tundra-81519.herokuapp.com/contacts", {
 				method: "get",
 				headers: {
 					"Content-type": "application/json",
@@ -70,7 +70,7 @@ const Contacts = (props) => {
 				});
 
 			setTimeout(async () => {
-				await fetch("http://localhost:5000/contacts/friends", {
+				await fetch("http://stormy-tundra-81519.herokuapp.com/contacts/friends", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -87,7 +87,7 @@ const Contacts = (props) => {
 			}, 50);
 
 			setInterval(async () => {
-				await fetch("http://localhost:5000/message/clients", {
+				await fetch("http://stormy-tundra-81519.herokuapp.com/message/clients", {
 					method: "GET",
 				})
 					.then((response) => response.json())
@@ -116,7 +116,7 @@ const Contacts = (props) => {
 	// 		credentials: "include",
 	// 	};
 
-	// 	await fetch("http://localhost:5000/message/history", requestOptions)
+	// 	await fetch("http://stormy-tundra-81519.herokuapp.com/message/history", requestOptions)
 	// 		.then((response) => response.json())
 	// 		.then(async (result) => {
 	// 			dispatch(updateHistory(result));
@@ -126,7 +126,7 @@ const Contacts = (props) => {
 	// };
 
 	const addContact = async () => {
-		await fetch("http://localhost:5000/contacts", {
+		await fetch("http://stormy-tundra-81519.herokuapp.com/contacts", {
 			method: "get",
 			headers: {
 				"Content-type": "application/json",
@@ -141,7 +141,7 @@ const Contacts = (props) => {
 		list.forEach(async (user) => {
 			if (user.username !== props.loggedinUser && user.phone === newContact) {
 				flag = true;
-				await fetch("http://localhost:5000/contacts/addcontact", {
+				await fetch("http://stormy-tundra-81519.herokuapp.com/contacts/addcontact", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -155,7 +155,7 @@ const Contacts = (props) => {
 					.then((data) => console.log(data))
 					.catch((err) => console.log(err));
 
-				await fetch("http://localhost:5000/contacts/friends", {
+				await fetch("http://stormy-tundra-81519.herokuapp.com/contacts/friends", {
 					method: "POST",
 					headers: {
 						"Content-Type": "application/json",
@@ -305,10 +305,10 @@ const Contacts = (props) => {
 				className="current"
 				onClick={() => {
 					sayThis(
-						`You are on Contacts page.${
+						`You are on Contacts page. ${
 							frndlist !== []
 								? `The contacts pointer is on ${frndlist[ptr].username}`
-								: `You have no friends,Add new friends using the center button.`
+								: `You have no friends, add new friends using the center button.`
 						}`
 					);
 				}}

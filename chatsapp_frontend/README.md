@@ -31,5 +31,5 @@ Frontend:
 - add a `.env` file to server directory and paste `MONGO_LOC="mongodb://localhost:27017/chatsapp-master"` in it.
 - install dependencies in both `server` and `chatsapp_frontend` directory by running `npm install`.
 - run `npm start` for both server and frontend.
-- server will be runnning on `localhost:5000`
+- server will be runnning on `stormy-tundra-81519.herokuapp.com`
 - frontend will be running on `localhost:3000`

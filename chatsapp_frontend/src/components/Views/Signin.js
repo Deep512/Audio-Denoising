@@ -40,7 +40,7 @@ const Signin = () => {
 			const password = getCookie("password");
 			console.log(username);
 			console.log(password);
-			fetch("http://localhost:5000/auth/login", {
+			fetch("http://stormy-tundra-81519.herokuapp.com/auth/login", {
 				method: "post",
 				headers: {
 					"Content-type": "application/json",
@@ -78,7 +78,7 @@ const Signin = () => {
 	}, [value]);
 
 	const postInfo = () => {
-		fetch("http://localhost:5000/auth/login", {
+		fetch("http://stormy-tundra-81519.herokuapp.com/auth/login", {
 			method: "post",
 			headers: {
 				"Content-type": "application/json",

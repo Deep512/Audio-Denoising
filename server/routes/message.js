@@ -158,10 +158,10 @@ router.get("/clients", (req, res) => {
 })
 
 router.post("/history", (req, res) => {
-    if (!req.isAuthenticated()) {
-        res.status(401).send("Unauthorized request!");
-        return;
-    }
+    // if (!req.isAuthenticated()) {
+    //     res.status(401).send("Unauthorized request!");
+    //     return;
+    // }
     const { from, to } = req.body;
     console.log(req.body)
     getHistory([from, to], [from, to]).then((msgs) => {

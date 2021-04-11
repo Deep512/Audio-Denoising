@@ -10,6 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import "./user.css";
 import Recorder from "../recorder/Recorder";
+import { getCookie } from "../../../hooks/useCookie";
 
 const User = (props) => {
 	const dispatch = useDispatch();
@@ -19,8 +20,8 @@ const User = (props) => {
 	const message = useSelector((state) => state.message);
 	const history = useSelector((state) => state.history);
 	const loggedInUser = useSelector((state) => state.loggedInUser);
-	var server = "http://localhost:5000/";
-	var ws_server = "ws://localhost:5000/";
+	var server = "http://stormy-tundra-81519.herokuapp.com/";
+	var ws_server = "ws://stormy-tundra-81519.herokuapp.com/";
 	var ws = new WebSocket(ws_server + "message");
 	var buffer = [];
 
@@ -41,7 +42,7 @@ const User = (props) => {
 			credentials: "include",
 		};
 
-		await fetch("http://localhost:5000/message/history", requestOptions)
+		await fetch("http://stormy-tundra-81519.herokuapp.com/message/history", requestOptions)
 			.then((response) => response.json())
 			.then(async (result) => {
 				console.log("data from server:", result);
@@ -60,7 +61,8 @@ const User = (props) => {
 				console.log(message.data);
 				getHistory();
 			};
-			await fetch(server + "self", {
+			const username = getCookie('username');
+			await fetch(server + `self/${username}`, {
 				method: "GET",
 				headers: {
 					Accept: "application/json",
@@ -103,7 +105,7 @@ const User = (props) => {
 
 	const logout = () => {
 		ws.close();
-		fetch("http://localhost:5000/auth/logout", { method: "GET" })
+		fetch("http://stormy-tundra-81519.herokuapp.com/auth/logout", { method: "GET" })
 			.then((data) => {
 				historys.push("/signin");
 				// this.props.history.push("/signin");

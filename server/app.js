@@ -7,7 +7,7 @@ const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
 // const expressValidator = require("express-validator");
-var cors = require("cors");
+// var cors = require("cors");
 const dotenv = require("dotenv");
 dotenv.config();
 const options = {
@@ -55,6 +55,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+const customAuth = (req,res,next) => {
+	console.log("In our middleware...", req.cookies);
+	next();
+}
+
+app.use(customAuth);
 app.use(
 	session({
 		secret: "secret",
@@ -83,6 +89,7 @@ app.use(function (req, res, next) {
 });
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 var indexRouter = require("./routes/index");
 var registerRouter = require("./routes/register");
