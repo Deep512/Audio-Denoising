@@ -10,7 +10,6 @@ import {
 	FormControl,
 	Button,
 } from "react-bootstrap";
-import { Person } from "@material-ui/icons";
 import { useSpeechSynthesis } from "react-speech-kit";
 
 const Signin = () => {
@@ -70,8 +69,6 @@ const Signin = () => {
 					<h2 className="brand-logo">Login</h2>
 				</Row>
 				<Row className="justify-content-center">
-					{/* <Person className="icon-person" style={{ fontSize: 120 }} /> */}
-
 					<InputGroup>
 						<Col xs={12}>
 							<FormControl
