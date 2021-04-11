@@ -84,13 +84,31 @@ const Chat = (props) => {
 				<div
 					className="top-left button"
 					onClick={async () => {
-						if (history !== []) {
-							console.log(1);
+						if (history.length !== 0) {
 							if (ptr == 0) {
 								sayThis("No more previous messages");
 							} else {
 								setPtr(ptr - 1);
 								var msg = history[ptr - 1];
+								console.log(msg);
+								readMessage(msg);
+							}
+						} else {
+							sayThis(`There has been no conversation with ${props.recipient}`);
+						}
+					}}
+				>
+					Left
+				</div>
+				<div
+					className="top-right button"
+					onClick={async () => {
+						if (history.length !== 0) {
+							if (ptr == history.length - 1) {
+								sayThis("No more new messages");
+							} else {
+								setPtr(ptr + 1);
+								var msg = history[ptr + 1];
 								console.log(msg);
 								readMessage(msg);
 								// sayThis(`From ${msg.from} To ${msg.to} `);
@@ -102,42 +120,10 @@ const Chat = (props) => {
 								// 	);
 								// } else {
 								// 	sayThis(`The audio message was `);
-								// 	await new Promise((resolve) => setTimeout(resolve, 6000));
+								// 	await new Promise((resolve) => setTimeout(resolve, 6200));
 								// 	const audio = new Audio(msg.enc);
 								// 	audio.play();
 								// }
-							}
-							// sayThis(frndlist[ptr]);
-						} else {
-							sayThis(`There has been no conversation with ${props.recipient}`);
-						}
-					}}
-				>
-					Left
-				</div>
-				<div
-					className="top-right button"
-					onClick={async () => {
-						if (history !== []) {
-							if (ptr == history.length - 1) {
-								sayThis("No more new messages");
-							} else {
-								setPtr(ptr + 1);
-								var msg = history[ptr + 1];
-								console.log(msg);
-								sayThis(`From ${msg.from} To ${msg.to} `);
-								if (msg.type === "text") {
-									sayThis(
-										`The text message was ${
-											msg.text.charAt(0).toUpperCase() + msg.text.slice(1)
-										}`
-									);
-								} else {
-									sayThis(`The audio message was `);
-									await new Promise((resolve) => setTimeout(resolve, 6200));
-									const audio = new Audio(msg.enc);
-									audio.play();
-								}
 							}
 							// sayThis(frndlist[ptr]);
 						} else {

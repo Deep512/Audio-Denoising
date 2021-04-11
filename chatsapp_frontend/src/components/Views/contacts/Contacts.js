@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import M from "materialize-css";
 import "./contacts.css";
 import { useHistory } from "react-router-dom";
-import { updateReciepient, updateHistory } from "../../../redux/actionCreator";
+import { updateReciepient } from "../../../redux/actionCreator";
 import { useDispatch, useSelector } from "react-redux";
 import { useSpeechSynthesis, useSpeechRecognition } from "react-speech-kit";
 import usePersistedState from "../../../hooks/usePersistedState";
+import { delete_cookie } from "../../../hooks/useCookie";
 
 const Contacts = (props) => {
 	const historys = useHistory();
@@ -48,7 +49,7 @@ const Contacts = (props) => {
 
 	let voice = null;
 	voices.forEach((v) => {
-		if (v.lang === "hi-IN") {
+		if (v.lang === "hi-EN") {
 			voice = v;
 		}
 	});
@@ -193,7 +194,7 @@ const Contacts = (props) => {
 				<div
 					className="top-left button"
 					onClick={() => {
-						if (frndlist !== []) {
+						if (frndlist.length !== 0) {
 							if (ptr == 0) {
 								setPtr(frndlist.length - 1);
 								console.log(frndlist[frndlist.length - 1]);
@@ -217,7 +218,9 @@ const Contacts = (props) => {
 								sayThis(frndlist[ptr - 1].username + status);
 							}
 						} else {
-							sayThis("You have no friends, You are going to Die Alone!");
+							sayThis(
+								"You have no friends, Add new friends using the center button!"
+							);
 						}
 					}}
 				>
@@ -226,7 +229,7 @@ const Contacts = (props) => {
 				<div
 					className="top-right button"
 					onClick={() => {
-						if (frndlist !== []) {
+						if (frndlist.length !== 0) {
 							if (ptr == frndlist.length - 1) {
 								setPtr(0);
 								console.log(frndlist[0]);
@@ -248,7 +251,9 @@ const Contacts = (props) => {
 								sayThis(frndlist[ptr + 1].username + status);
 							}
 						} else {
-							sayThis("You have no friends, You are going to Die Alone!");
+							sayThis(
+								"You have no friends, Add new friends using the center button"
+							);
 						}
 					}}
 				>
@@ -258,6 +263,8 @@ const Contacts = (props) => {
 					className="bottom-left button"
 					onClick={() => {
 						localStorage.setItem("ptr", 0);
+						delete_cookie("username");
+						delete_cookie("password");
 						props.logout();
 					}}
 				>
@@ -275,7 +282,9 @@ const Contacts = (props) => {
 								historys.push("/usr/chat");
 							}
 						} else {
-							sayThis("You have no friends, You are going to Die Alone!");
+							sayThis(
+								"You have no friends. Add new friends using the center button!"
+							);
 						}
 					}}
 				>
@@ -299,7 +308,7 @@ const Contacts = (props) => {
 						`You are on Contacts page.${
 							frndlist !== []
 								? `The contacts pointer is on ${frndlist[ptr].username}`
-								: `You have no friends.`
+								: `You have no friends,Add new friends using the center button.`
 						}`
 					);
 				}}

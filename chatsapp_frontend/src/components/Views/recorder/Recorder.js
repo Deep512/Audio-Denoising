@@ -75,7 +75,7 @@ export default function Recorder(props) {
 								onMouseUp={end}
 								onMouseLeave={end}
 							>
-								{status === "recording" ? "Recording..." : "Record"}
+								{status === "recording" ? "Recording..." : "Re-Record"}
 							</div>
 						);
 					}}
