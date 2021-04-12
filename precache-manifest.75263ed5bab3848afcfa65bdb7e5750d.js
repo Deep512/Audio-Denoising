@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "ad49b7d6f24e011456f9e4a3310144f9",
+    "revision": "59a8399facbd8f91446b6fad6f5b88be",
     "url": "/Audio-Denoising/index.html"
   },
   {
@@ -8,8 +8,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Audio-Denoising/static/css/2.829c9cb5.chunk.css"
   },
   {
-    "revision": "5f666096949d7156d651",
-    "url": "/Audio-Denoising/static/css/main.d8b3e76b.chunk.css"
+    "revision": "a774078b7cd7a07ccce4",
+    "url": "/Audio-Denoising/static/css/main.d386f757.chunk.css"
   },
   {
     "revision": "a83ce768a41b315d0682",
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Audio-Denoising/static/js/2.eeaecc29.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "5f666096949d7156d651",
-    "url": "/Audio-Denoising/static/js/main.3791b97e.chunk.js"
+    "revision": "a774078b7cd7a07ccce4",
+    "url": "/Audio-Denoising/static/js/main.4816afca.chunk.js"
   },
   {
     "revision": "01e1206d35b50fb9c9be",

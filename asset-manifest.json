@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/Audio-Denoising/static/css/main.d8b3e76b.chunk.css",
-    "main.js": "/Audio-Denoising/static/js/main.3791b97e.chunk.js",
-    "main.js.map": "/Audio-Denoising/static/js/main.3791b97e.chunk.js.map",
+    "main.css": "/Audio-Denoising/static/css/main.d386f757.chunk.css",
+    "main.js": "/Audio-Denoising/static/js/main.4816afca.chunk.js",
+    "main.js.map": "/Audio-Denoising/static/js/main.4816afca.chunk.js.map",
     "runtime-main.js": "/Audio-Denoising/static/js/runtime-main.fb9af759.js",
     "runtime-main.js.map": "/Audio-Denoising/static/js/runtime-main.fb9af759.js.map",
     "static/css/2.829c9cb5.chunk.css": "/Audio-Denoising/static/css/2.829c9cb5.chunk.css",
     "static/js/2.eeaecc29.chunk.js": "/Audio-Denoising/static/js/2.eeaecc29.chunk.js",
     "static/js/2.eeaecc29.chunk.js.map": "/Audio-Denoising/static/js/2.eeaecc29.chunk.js.map",
     "index.html": "/Audio-Denoising/index.html",
-    "precache-manifest.c27d538862dfd18fe862315e8c5f7e44.js": "/Audio-Denoising/precache-manifest.c27d538862dfd18fe862315e8c5f7e44.js",
+    "precache-manifest.75263ed5bab3848afcfa65bdb7e5750d.js": "/Audio-Denoising/precache-manifest.75263ed5bab3848afcfa65bdb7e5750d.js",
     "service-worker.js": "/Audio-Denoising/service-worker.js",
     "static/css/2.829c9cb5.chunk.css.map": "/Audio-Denoising/static/css/2.829c9cb5.chunk.css.map",
-    "static/css/main.d8b3e76b.chunk.css.map": "/Audio-Denoising/static/css/main.d8b3e76b.chunk.css.map",
+    "static/css/main.d386f757.chunk.css.map": "/Audio-Denoising/static/css/main.d386f757.chunk.css.map",
     "static/js/2.eeaecc29.chunk.js.LICENSE.txt": "/Audio-Denoising/static/js/2.eeaecc29.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.fb9af759.js",
     "static/css/2.829c9cb5.chunk.css",
     "static/js/2.eeaecc29.chunk.js",
-    "static/css/main.d8b3e76b.chunk.css",
-    "static/js/main.3791b97e.chunk.js"
+    "static/css/main.d386f757.chunk.css",
+    "static/js/main.4816afca.chunk.js"
   ]
 }
