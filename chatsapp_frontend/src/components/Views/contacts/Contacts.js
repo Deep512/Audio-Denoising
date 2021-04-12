@@ -22,6 +22,7 @@ const Contacts = (props) => {
 	const { speak, voices } = useSpeechSynthesis();
 	const [newContact, setNewContact] = useState("");
 	const [verifyContact, setVerifyContact] = useState(false);
+	// const [result, setResult] = useState(false);
 	const { listen, listening, stop } = useSpeechRecognition({
 		onResult: (result) => {
 			setNewContact(result.replace(/[^\d]/g, ""));
@@ -55,7 +56,6 @@ const Contacts = (props) => {
 	const onClickAddContact = () => {
 		sayThis("Adding contact...");
 		addContact().then(() => {
-			sayThis("Number added to friend list.");
 			setVerifyContact(false);
 			setNewContact("");
 		});
@@ -122,18 +122,18 @@ const Contacts = (props) => {
 					.catch((err) => console.log(err));
 			}, 50);
 
-			setInterval(async () => {
-				await fetch(
-					"https://stormy-tundra-81519.herokuapp.com/message/clients",
-					{
-						method: "GET",
-					}
-				)
-					.then((response) => response.json())
-					.then((data) => {
-						setOnline(data);
-					});
-			}, 500);
+			// setInterval(async () => {
+			// 	await fetch(
+			// 		"https://stormy-tundra-81519.herokuapp.com/message/clients",
+			// 		{
+			// 			method: "GET",
+			// 		}
+			// 	)
+			// 		.then((response) => response.json())
+			// 		.then((data) => {
+			// 			setOnline(data);
+			// 		});
+			// }, 500);
 		}
 		anyFunction();
 	}, [props.loggedinUser, frndlist]);
@@ -211,13 +211,17 @@ const Contacts = (props) => {
 				)
 					.then((response) => response.json())
 					.then((data) => {
+						sayThis("Number added to friend list.");
 						setFrndList(data);
 						console.log("friendlist", data);
 					})
 					.catch((err) => console.log(err));
 			}
+			setVerifyContact(false);
 			return;
 		});
+		setVerifyContact(false);
+
 		if (flag === false) {
 			sayThis("User doesnt exist");
 			M.toast({ html: "User doesnt exist!!" });
