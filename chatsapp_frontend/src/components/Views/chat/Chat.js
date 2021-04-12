@@ -198,7 +198,7 @@ const Chat = (props) => {
 				<div
 					className="center"
 					onClick={async () => {
-						if (history !== []) {
+						if (history.length !== 0) {
 							setPtr(history.length - 1);
 							sayThis("Jumping back to latest message");
 							await new Promise((resolve) => setTimeout(resolve, 3000));
