@@ -21,7 +21,7 @@ const Signup = () => {
 	});
 
 	const postInfo = () => {
-		fetch("http://stormy-tundra-81519.herokuapp.com/register", {
+		fetch("https://stormy-tundra-81519.herokuapp.com/register", {
 			method: "post",
 			headers: {
 				"Content-type": "application/json",

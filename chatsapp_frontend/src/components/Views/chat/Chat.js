@@ -40,7 +40,10 @@ const Chat = (props) => {
 				credentials: "include",
 			};
 
-			await fetch("http://stormy-tundra-81519.herokuapp.com/message/history", requestOptions)
+			await fetch(
+				"https://stormy-tundra-81519.herokuapp.com/message/history",
+				requestOptions
+			)
 				.then((response) => response.json())
 				.then(async (result) => {
 					console.log("data from server:", result);

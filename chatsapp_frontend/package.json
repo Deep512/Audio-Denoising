@@ -2,8 +2,8 @@
   "name": "chatsapp_frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://Deep512.github.io/Audio-Denoising",
-  "proxy": "http://stormy-tundra-81519.herokuapp.com",
+  "homepage": "https://Deep512.github.io/Audio-Denoising",
+  "proxy": "https://stormy-tundra-81519.herokuapp.com",
   "dependencies": {
     "@material-ui/core": "^4.10.1",
     "@material-ui/icons": "^4.9.1",

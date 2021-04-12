@@ -76,7 +76,7 @@ class Inputmsg extends Component {
 			credentials: "include",
 		};
 
-		await fetch("http://stormy-tundra-81519.herokuapp.com/message/history", requestOptions)
+		await fetch("https://stormy-tundra-81519.herokuapp.com/message/history", requestOptions)
 			.then((response) => response.json())
 			.then(async (result) => {
 				await this.props.updateHistory(result);

@@ -55,10 +55,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
-const customAuth = (req,res,next) => {
+const customAuth = (req, res, next) => {
 	console.log("In our middleware...", req.cookies);
 	next();
-}
+};
 
 app.use(customAuth);
 app.use(
@@ -69,7 +69,7 @@ app.use(
 		cookie: { secure: false },
 	})
 );
-// app.use(cors({credentials: true, origin: 'http://localhost:3000'}));
+// app.use(cors({credentials: true, origin: 'https://localhost:3000'}));
 app.use(function (req, res, next) {
 	res.header("Access-Control-Allow-Credentials", true);
 	res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -89,7 +89,6 @@ app.use(function (req, res, next) {
 });
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 var indexRouter = require("./routes/index");
 var registerRouter = require("./routes/register");

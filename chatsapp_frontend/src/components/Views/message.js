@@ -7,8 +7,8 @@ const Message = () => {
 	const [msg, setMsg] = useState("");
 	const [to, setTo] = useState("");
 	const history = useHistory();
-	var server = "http://stormy-tundra-81519.herokuapp.com/";
-	var ws_server = "ws://stormy-tundra-81519.herokuapp.com/";
+	var server = "https://stormy-tundra-81519.herokuapp.com/";
+	var ws_server = "wss://stormy-tundra-81519.herokuapp.com/";
 	var phone;
 
 	const ws = new WebSocket(ws_server + "message");
@@ -21,7 +21,7 @@ const Message = () => {
 	let buffer = [];
 
 	const postMessage = async () => {
-		const username = getCookie('username');
+		const username = getCookie("username");
 		await fetch(server + `self/${username}`, {
 			method: "GET",
 			headers: {
@@ -30,7 +30,6 @@ const Message = () => {
 			},
 			credentials: "include",
 			withCredentials: true,
-			
 		})
 			.then((resp) => resp.json())
 			.then((data) => {

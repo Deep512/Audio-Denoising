@@ -20,8 +20,8 @@ const User = (props) => {
 	const message = useSelector((state) => state.message);
 	const history = useSelector((state) => state.history);
 	const loggedInUser = useSelector((state) => state.loggedInUser);
-	var server = "http://stormy-tundra-81519.herokuapp.com/";
-	var ws_server = "ws://stormy-tundra-81519.herokuapp.com/";
+	var server = "https://stormy-tundra-81519.herokuapp.com/";
+	var ws_server = "wss://stormy-tundra-81519.herokuapp.com/";
 	var ws = new WebSocket(ws_server + "message");
 	var buffer = [];
 
@@ -42,7 +42,10 @@ const User = (props) => {
 			credentials: "include",
 		};
 
-		await fetch("http://stormy-tundra-81519.herokuapp.com/message/history", requestOptions)
+		await fetch(
+			"https://stormy-tundra-81519.herokuapp.com/message/history",
+			requestOptions
+		)
 			.then((response) => response.json())
 			.then(async (result) => {
 				console.log("data from server:", result);
@@ -61,7 +64,7 @@ const User = (props) => {
 				console.log(message.data);
 				getHistory();
 			};
-			const username = getCookie('username');
+			const username = getCookie("username");
 			await fetch(server + `self/${username}`, {
 				method: "GET",
 				headers: {
@@ -105,7 +108,9 @@ const User = (props) => {
 
 	const logout = () => {
 		ws.close();
-		fetch("http://stormy-tundra-81519.herokuapp.com/auth/logout", { method: "GET" })
+		fetch("https://stormy-tundra-81519.herokuapp.com/auth/logout", {
+			method: "GET",
+		})
 			.then((data) => {
 				historys.push("/signin");
 				// this.props.history.push("/signin");
