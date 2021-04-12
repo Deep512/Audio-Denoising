@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/Audio-Denoising/static/css/main.d386f757.chunk.css",
-    "main.js": "/Audio-Denoising/static/js/main.c3040f44.chunk.js",
-    "main.js.map": "/Audio-Denoising/static/js/main.c3040f44.chunk.js.map",
+    "main.js": "/Audio-Denoising/static/js/main.381b42a8.chunk.js",
+    "main.js.map": "/Audio-Denoising/static/js/main.381b42a8.chunk.js.map",
     "runtime-main.js": "/Audio-Denoising/static/js/runtime-main.fb9af759.js",
     "runtime-main.js.map": "/Audio-Denoising/static/js/runtime-main.fb9af759.js.map",
     "static/css/2.829c9cb5.chunk.css": "/Audio-Denoising/static/css/2.829c9cb5.chunk.css",
     "static/js/2.30ede905.chunk.js": "/Audio-Denoising/static/js/2.30ede905.chunk.js",
     "static/js/2.30ede905.chunk.js.map": "/Audio-Denoising/static/js/2.30ede905.chunk.js.map",
     "index.html": "/Audio-Denoising/index.html",
-    "precache-manifest.e689925eb5c5d8c439b1312f2d933be0.js": "/Audio-Denoising/precache-manifest.e689925eb5c5d8c439b1312f2d933be0.js",
+    "precache-manifest.34547c56ec65fdb6b59c2bf97e3e2972.js": "/Audio-Denoising/precache-manifest.34547c56ec65fdb6b59c2bf97e3e2972.js",
     "service-worker.js": "/Audio-Denoising/service-worker.js",
     "static/css/2.829c9cb5.chunk.css.map": "/Audio-Denoising/static/css/2.829c9cb5.chunk.css.map",
     "static/css/main.d386f757.chunk.css.map": "/Audio-Denoising/static/css/main.d386f757.chunk.css.map",
@@ -20,6 +20,6 @@
     "static/css/2.829c9cb5.chunk.css",
     "static/js/2.30ede905.chunk.js",
     "static/css/main.d386f757.chunk.css",
-    "static/js/main.c3040f44.chunk.js"
+    "static/js/main.381b42a8.chunk.js"
   ]
 }

@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Audio-Denoising/precache-manifest.e689925eb5c5d8c439b1312f2d933be0.js"
+  "/Audio-Denoising/precache-manifest.34547c56ec65fdb6b59c2bf97e3e2972.js"
 );
 
 self.addEventListener('message', (event) => {
